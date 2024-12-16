@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Search;
 
 use App\Repository\EventRepository;
-use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 
 final class DatabaseEventSearch implements EventSearchInterface
 {

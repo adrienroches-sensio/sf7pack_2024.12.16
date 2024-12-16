@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Form\EventType;
+use App\Search\DatabaseEventSearch;
 use App\Search\EventSearchInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,13 +16,22 @@ use Symfony\Component\Routing\Attribute\Route;
 class EventController extends AbstractController
 {
     #[Route('/events', name: 'app_event_list', methods: ['GET'])]
-    public function listEvents(Request $request, EventSearchInterface $eventSearch): Response
+    public function listEvents(Request $request, DatabaseEventSearch $eventSearch): Response
     {
         $events = $eventSearch->searchByName($request->query->get('name', null));
 
         return $this->render('event/list_events.html.twig', [
             'events' => $events,
         ]);
+    }
+
+    #[Route('/event/search', name: 'app_event_search', methods: ['GET'])]
+    #[Template('event/search_event.html.twig')]
+    public function searchEvent(Request $request, EventSearchInterface $eventSearch): array
+    {
+        return [
+            'events' => $eventSearch->searchByName($request->query->get('name', null))
+        ];
     }
 
     #[Route('/event/{id}', name: 'app_event_show', requirements: ['id' => '\d+'], methods: ['GET'])]
