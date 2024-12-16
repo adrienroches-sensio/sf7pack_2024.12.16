@@ -6,6 +6,7 @@ namespace App\Search;
 
 use SensitiveParameter;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpClient\HttpClient;
 
 final class ApiEventSearch implements EventSearchInterface
 {
@@ -16,8 +17,16 @@ final class ApiEventSearch implements EventSearchInterface
     ) {
     }
 
-    public function searchByName(?string $name = null): array
+    public function searchByName(string|null $name = null): array
     {
-        return [];
+        $client = HttpClient::create();
+
+        return $client->request('GET', 'https://www.devevents-api.fr/events', [
+            'query' => ['name' => $name],
+            'headers' => [
+                'apikey' => $this->apiKey,
+                'Accept' => 'application/json',
+            ],
+        ])->toArray();
     }
 }
