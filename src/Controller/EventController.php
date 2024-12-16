@@ -26,7 +26,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/event/search', name: 'app_event_search', methods: ['GET'])]
-    #[Template('event/search_event.html.twig')]
+    #[Template('event/list_events.html.twig')]
     public function searchEvent(Request $request, EventSearchInterface $eventSearch): array
     {
         return [
