@@ -7,7 +7,6 @@ namespace App\Search;
 use App\Repository\EventRepository;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 
-#[AsAlias]
 final class DatabaseEventSearch implements EventSearchInterface
 {
     public function __construct(

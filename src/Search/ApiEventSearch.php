@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Search;
 
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+#[AsAlias]
 final class ApiEventSearch implements EventSearchInterface
 {
     public function __construct(
