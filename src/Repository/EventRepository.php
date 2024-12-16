@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function sprintf;
 
 /**
  * @extends ServiceEntityRepository<Event>
@@ -40,6 +41,20 @@ class EventRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function searchByName(string $name): array
+    {
+        $qb = $this->createQueryBuilder('event');
+
+        $qb
+            ->andWhere($qb->expr()->like('event.name', ':name'))
+            ->setParameter('name', "%{$name}%")
+        ;
+
+        return $qb
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**
