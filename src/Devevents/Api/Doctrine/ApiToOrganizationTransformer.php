@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Devevents\Api\Doctrine;
 
 use App\Entity\Organization;
+use App\Security\Authorization;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -44,6 +45,6 @@ final class ApiToOrganizationTransformer
 
     private function isGranted(): bool
     {
-        return $this->authorizationChecker->isGranted('ROLE_ORGANIZER') || $this->authorizationChecker->isGranted('ROLE_WEBSITE');
+        return $this->authorizationChecker->isGranted(Authorization::ORGANIZATION_CREATE);
     }
 }

@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Entity\Project;
 use App\Form\ProjectType;
 use App\Repository\ProjectRepository;
+use App\Security\Authorization;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -33,7 +33,7 @@ class ProjectController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression('is_granted("ROLE_ORGANIZER") or is_granted("ROLE_WEBSITE")'))]
+    #[IsGranted(Authorization::PROJECT_CREATE)]
     #[Route('/project/new', name: 'app_project_new', methods: ['GET', 'POST'])]
     public function newProject(Request $request, EntityManagerInterface $manager): Response
     {
