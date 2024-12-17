@@ -6,11 +6,13 @@ namespace App\Devevents\Api\Doctrine;
 
 use App\Entity\Event;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 final class ApiToEventTransformer
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 
@@ -30,7 +32,9 @@ final class ApiToEventTransformer
 
         $event = $this->transform($apiEvent);
 
-        $this->manager->persist($event);
+        if ($this->isGranted() === true) {
+            $this->manager->persist($event);
+        }
 
         return $event;
     }
@@ -44,5 +48,10 @@ final class ApiToEventTransformer
             ->setDescription($apiEvent['description'])
             ->setAccessible($apiEvent['accessible'])
         ;
+    }
+
+    private function isGranted(): bool
+    {
+        return $this->authorizationChecker->isGranted('ROLE_ORGANIZER') || $this->authorizationChecker->isGranted('ROLE_WEBSITE');
     }
 }

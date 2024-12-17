@@ -9,9 +9,11 @@ use App\Search\EventSearchInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class EventController extends AbstractController
 {
@@ -42,6 +44,7 @@ class EventController extends AbstractController
         ]);
     }
 
+    #[IsGranted(new Expression('is_granted("ROLE_ORGANIZER") or is_granted("ROLE_WEBSITE")'))]
     #[Route('/event/new', name: 'app_event_new', methods: ['GET', 'POST'])]
     public function newEvent(Request $request, EntityManagerInterface $manager): Response
     {
