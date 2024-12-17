@@ -20,6 +20,7 @@ class AppFixtures extends Fixture
             ->setEmail('admin@example.com')
             ->setPassword($this->passwordHasherFactory->getPasswordHasher(User::class)->hash('admin'))
             ->setRoles(['ROLE_ADMIN'])
+            ->setApiKey('admin_api_key')
         ;
 
         $manager->persist($admin);

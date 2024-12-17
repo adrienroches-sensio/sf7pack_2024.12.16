@@ -42,6 +42,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Volunteer::class, mappedBy: 'forUser', orphanRemoval: true)]
     private Collection $volunteers;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $apiKey = null;
+
     public function __construct()
     {
         $this->volunteers = new ArrayCollection();
@@ -148,6 +151,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $volunteer->setForUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getApiKey(): ?string
+    {
+        return $this->apiKey;
+    }
+
+    public function setApiKey(?string $apiKey): static
+    {
+        $this->apiKey = $apiKey;
 
         return $this;
     }
